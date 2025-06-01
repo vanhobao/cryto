@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Chart Pro v4</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/browser.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col h-screen overflow-hidden">
+
+    <div class="toolbar bg-gray-800 p-2 flex items-center space-x-2 shadow-md flex-wrap">
+        <div class="flex items-center space-x-2">
+            <label for="symbol-select" class="text-sm">Coin:</label>
+            <select id="symbol-select" class="p-2 rounded text-sm bg-gray-700 text-white custom-select">
+                </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <label for="interval-select" class="text-sm">Khung TG:</label>
+            <select id="interval-select" class="p-2 rounded text-sm bg-gray-700 text-white custom-select">
+                <option value="1m">1m</option>
+                <option value="3m">3m</option>
+                <option value="5m">5m</option>
+                <option value="15m" selected>15m</option>
+                <option value="30m">30m</option>
+                <option value="1h">1H</option>
+                <option value="2h">2H</option>
+                <option value="4h">4H</option>
+                <option value="6h">6H</option>
+                <option value="8h">8H</option>
+                <option value="12h">12H</option>
+                <option value="1d">1D</option>
+                <option value="3d">3D</option>
+                <option value="1w">1W</option>
+                <option value="1M">1Th</option>
+            </select>
+        </div>
+        <button id="refresh-chart" class="p-2 rounded text-sm">Tải Lại</button>
+        <button id="indicator-settings-button" class="p-2 rounded text-sm">⚙️ Chỉ Báo</button>
+        <div class="flex-grow"></div>
+        <div id="data-status" class="text-xs text-gray-400 mr-2"></div>
+        <div id="loading-indicator" class="text-sm hidden">
+            <svg class="animate-spin h-5 w-5 text-blue-400 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Đang tải...
+        </div>
+    </div>
+
+    <div id="indicator-settings-modal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="modal-content p-6 rounded-lg shadow-xl w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-semibold">Tùy Chỉnh Thông Số Chỉ Báo</h3>
+                <button id="close-settings-modal" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div id="indicator-params-form" class="space-y-6 text-sm">
+                </div>
+            <div class="mt-8 flex justify-end space-x-3">
+                <button id="reset-indicator-settings" class="p-2 px-4 rounded text-sm bg-yellow-600 hover:bg-yellow-700">Reset Mặc Định</button>
+                <button id="apply-indicator-settings" class="p-2 px-4 rounded text-sm bg-blue-600 hover:bg-blue-700">Áp Dụng</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-grow overflow-hidden main-layout">
+        <div id="market-watch-container" class="sidebar p-3 space-y-1 overflow-y-auto">
+            <h2 class="text-lg font-semibold mb-2 sticky top-0 bg-gray-800 py-1 z-10">Theo Dõi Thị Trường</h2>
+            <input type="text" id="market-watch-search" placeholder="Tìm coin (ví dụ: BTC)" class="w-full p-1 mb-2 rounded text-xs bg-gray-700 text-white border border-gray-600">
+            <div id="market-watch-list" class="space-y-1">
+                </div>
+        </div>
+
+        <div class="main-content p-1 md:p-2 flex flex-col overflow-hidden">
+            <div id="main-chart-area" class="flex-grow flex flex-col">
+                <div id="chart-container" class="chart-pane flex-grow rounded shadow-lg"></div>
+                <div id="indicator-pane-1" class="indicator-pane rounded shadow-lg"></div>
+            </div>
+            <div id="sub-chart-area" class="flex-none flex flex-col md:flex-row" style="height: 30%;">
+                <div id="indicator-pane-2" class="indicator-pane rounded shadow-lg flex-1"></div>
+                <div id="indicator-pane-3" class="indicator-pane rounded shadow-lg flex-1 md:ml-2 mt-2 md:mt-0"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
